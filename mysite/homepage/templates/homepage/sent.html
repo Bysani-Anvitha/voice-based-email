@@ -1,0 +1,84 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+	<body onmousedown = "SendPostRequestSent(event)">
+		<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+			<div class="container"><a class="navbar-brand" style="font-size:150%;">VOICE BASED EMAIL FOR THE BLIND</a>
+				
+			</div>
+		</nav>
+		<div class="text-left text-white bg-white">
+					<center>
+						<h2 style = "margin-top: 100px;color:black;">SENT MAILS PAGE</h2>			
+						<br>
+						<h3 style="color: black;"> What would you like to do? <h3><br>
+						
+					</center>
+					
+
+				
+				<table align="center" style="margin-top: -30px;">
+					<tr>
+						<td>
+							
+								<input href="inbox.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								 role="button"
+								 style="width: 250px; background-color: #e7e7e7;color:black;" type="submit" 
+								value="SEARCH" >
+						</td>
+
+					</tr>
+						
+					<tr>
+						<td>
+							
+								<input href="options.html"class="btn btn-primary btn-xl rounded-pill mt-5" 
+								role="button" 
+								style="width: 250px; background-color:#e7e7e7;color:black;margin-top:20px;" type="submit"  
+								value="BACK">
+						</td>
+					</tr>
+						
+					
+					<tr>
+						<td>
+							
+								<input href="login.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								role="button"
+								style="width: 250px; background-color: #e7e7e7;color:black;margin-top:20px;"  type="submit" 
+								value="LOGOUT">
+						</td>
+					</tr>
+						
+
+				</table>
+			
+			<div class="bg-circle-1 bg-circle"></div>
+			<div class="bg-circle-2 bg-circle"></div>
+			<div class="bg-circle-3 bg-circle"></div>
+			<div class="bg-circle-4 bg-circle"></div>
+		</div>
+		<!--<footer class="py-5 bg-black">
+			<div class="container">
+				<p class="text-center text-white m-0 small">Copyright&nbsp;© Voice Based Email&nbsp;</p>
+			</div>
+		</footer>-->
+	<script>
+	function SendPostRequestSent(event){
+		$.ajax({
+        url: "{% url 'homepage:sent' %}",
+        method: 'POST',
+        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success: function (data) {
+			if(data.result == 'success'){
+				window.location = "{% url 'homepage:options' %}";
+			}
+			else if(data.result == 'logout'){
+				window.location = "{% url 'homepage:login' %}";
+			}
+        }
+    });
+	}
+	</script>
+
+{% endblock %}

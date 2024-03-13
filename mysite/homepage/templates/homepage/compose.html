@@ -1,0 +1,68 @@
+{% extends 'base_layout.html' %}
+{% block content %}
+<body onmousedown = "WhichButtonCompose(event)">
+	<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+        <div class="container"><a class="navbar-brand" style="font-size:150%;">VOICE BASED EMAIL FOR THE BLIND</a>
+            
+        </div>
+    </nav>
+    
+    <h4 class="sent-notification"></h4>
+
+		<form id="here"  >
+			<script> 
+				$(document).ready(function(){
+				setInterval(function(){
+					  $("#here").load(window.location.href + " #here" );
+				}, 1000);
+				});
+				</script>
+		
+            {% csrf_token %}
+            <div style="margin-top:100px;">
+            <h2 style="text-align: center;">Compose Email</h2>
+			<b><label style="color:black;font-size:15px" >RECIEPIENT'S EMAIL ID : </label></b><br>
+			<input id="email" type="text" style="width: 100%;height: 50px;border-radius:5px " placeholder="Enter Email" required value="{{compose.recipient}}">
+			<br><br>
+
+			<b><label style="color:black;font-size:15px" >SUBJECT : </label></b><br>
+			<input id="subject" type="text" style="width: 100%;height: 50px;border-radius:5px " placeholder=" Enter Subject" required value="{{compose.subject}}"> 
+			<br><br>
+
+			<b><label style="color:black;font-size:15px" >BODY : </label></b><br>
+			<input id="body" rows="5" style="width: 100%;height: 200px;border-radius:5px " placeholder="Type Message"required value="{{compose.body}}">
+			<br>
+
+            <center>
+            <input href="#"class="btn btn-primary btn-xl rounded-pill mt-5" role="button" type="button" onclick="sendEmail()"value="SEND MAIL"style="background-color:#e7e7e7;color:black;margin-top:10px;"></a>
+            </center>  
+		</form>
+
+    <script>
+        function WhichButtonCompose(event){
+            $.ajax({
+            url: "{% url 'homepage:compose' %}",
+            method: 'POST',
+            data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+            success: function (data) {
+                if(data.result == 'success'){
+                    console.log("Clear Input values");
+                    /*$('#email').val('');
+                    $('#subject').val('');
+                    $('#body').val('');
+                    console.log("Input values cleared");*/
+                    window.location.reload(true); // Force reload from the server
+                    window.location = "{% url 'homepage:options' %}";
+                }
+                else if(data.result == 'failure'){
+                    $('#email').val('');
+                    $('#subject').val('');
+                    $('#body').val('');
+                    window.location = "{% url 'homepage:compose' %}";
+                }
+            }
+        });
+        }
+    </script>
+    
+    {% endblock %}

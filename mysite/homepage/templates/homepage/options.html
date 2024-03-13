@@ -1,0 +1,133 @@
+{% extends 'base_layout.html' %}
+
+{% block content %}
+<style>
+	header{
+		background: white !important;
+	}
+</style>
+
+	<body onmousedown = "SendPostRequestOptions(event)" class="p-3 mb-2 bg-white">
+		<nav class="navbar navbar-dark navbar-expand-lg fixed-top bg-dark navbar-custom">
+			<div class="container"><a class="navbar-brand" style="font-size:150%;">VOICE BASED EMAIL FOR THE BLIND</a>
+				
+			</div>
+		</nav>
+		<h4>Menu Page</h4>
+		<div class="text-white bg-white">
+				
+						<h2 style = "margin-top: 70px;color:black;text-align:center">MENU PAGE</h2>			
+						<br>
+    
+						<h3 style="color:black;text-align:center"> What would you like to do? <h2><br>
+						
+					
+				<div class ="options">
+
+				
+				<table align="center" style="margin-top: -30px;">
+					<tr>
+						<td>
+							<a href="compose.html"> 
+								<input href="compose.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								class="button" role="button"
+								style="width: 250px; background-color: #e7e7e7; color: black;" type="submit" 
+								value="COMPOSE"></a>
+						</td>
+					</tr>
+						
+					<tr>
+						<td>
+							<a href="inbox.html"> 
+								<input href="inbox.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								 role="button"
+								 style="width: 250px; background-color: #e7e7e7; color:black;margin-top:20px;" type="submit" 
+								value="INBOX" ></a>
+						</td>
+
+					</tr>
+						
+					<tr>
+						<td>
+							<a href="sent.html"> 
+								<input href="sent.html"class="btn btn-primary btn-xl rounded-pill mt-5" 
+								role="button" 
+								style="width: 250px; background-color: #e7e7e7; color:black;margin-top:20px;" type="submit"  
+								value="SENT"></a>
+						</td>
+					</tr>
+						
+					<tr>
+						<td>
+							<a href="trash.html"> 
+								<input href="trash.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								role="button" 
+								style="width: 250px; background-color: #e7e7e7; color:black;margin-top:20px;"  type="submit" 
+								value="TRASH"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="starred.html"> 
+								<input href="starred.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								role="button"
+								style="width: 250px; background-color: #e7e7e7; color:black;margin-top:20px;"  type="submit" 
+								value="Starred"></a>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<a href="login.html"> 
+								<input href="logout.html"class="btn btn-primary btn-xl rounded-pill mt-5"
+								role="button"
+								style="width: 250px; background-color: #e7e7e7; color:black;margin-top:20px;"  type="submit" 
+								value="LOGOUT"></a>
+						</td>
+					</tr>
+
+						
+
+				</table>
+			</div>
+			<div class="bg-circle-1 bg-circle"></div>
+			<div class="bg-circle-2 bg-circle"></div>
+			<div class="bg-circle-3 bg-circle"></div>
+			<div class="bg-circle-4 bg-circle"></div>
+		</div>
+	<script>
+	function SendPostRequestOptions(event){
+		$.ajax({
+        url: "{% url 'homepage:options' %}",
+        method: 'POST',
+        data: { 'csrfmiddlewaretoken': '{{ csrf_token }}'},
+        success: function (data) {
+			console.log(data.result)
+			if(data.result == 'compose'){
+				console.log("reached compose");
+				window.location = "{% url 'homepage:compose' %}";
+			}
+			else if(data.result == 'sent'){
+				window.location = "{% url 'homepage:sent' %}";
+			}	
+			else if(data.result == 'inbox'){
+				window.location = "{% url 'homepage:inbox' %}";
+			}
+			else if(data.result == 'trash'){
+				window.location = "{% url 'homepage:trash' %}";
+			}
+			else if(data.result == 'star'){
+				console.log("reached");
+				window.location = "{% url 'homepage:starred' %}";
+			}
+			else if(data.result == 'logout'){
+				window.location = "{% url 'homepage:login' %}";
+			}
+			else if(data.result == 'failure'){
+				window.location = "{% url 'homepage:options' %}";
+			}
+        }
+    });
+	}
+	</script>
+
+{% endblock %}
